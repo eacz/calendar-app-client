@@ -9,3 +9,16 @@ export const addNewEvent = (event) => ({
     type: types.calendarAddNewEvent,
     payload: event,
 });
+
+export const clearActiveEvent = (event) => ({
+    type: types.calendarClearActiveEvent,
+});
+
+export const updateEvent = (event) => ({
+    type: types.calendarUpdateEvent,
+    payload: event,
+});
+
+export const eventDeleted = () => ({
+    type: types.calendarDeleteEvent,
+});
