@@ -10,6 +10,8 @@ import Navbar from '../ui/Navbar';
 import CalendarModal from './CalendarModal';
 import { useDispatch } from 'react-redux';
 import { openModalAction } from '../../redux/actions/ui';
+import { setActiveEvent } from '../../redux/actions/calendar';
+import AddNewFab from '../ui/AddNewFab';
 
 const localizer = momentLocalizer(moment);
 
@@ -26,9 +28,11 @@ const CalendarScreen = () => {
             style,
         };
     };
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
-    const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'month')
+    const [lastView, setLastView] = useState(
+        localStorage.getItem('lastView') || 'month'
+    );
 
     const events = [
         {
@@ -42,11 +46,12 @@ const CalendarScreen = () => {
     ];
 
     const onDoubleClick = (e) => {
-        dispatch(openModalAction())
+        dispatch(openModalAction());
     };
 
     const onSelectEvent = (e) => {
-        console.log(e);
+        dispatch(setActiveEvent(e));
+        dispatch(openModalAction());
     };
 
     const onViewChange = (e) => {
@@ -71,7 +76,8 @@ const CalendarScreen = () => {
                 onView={onViewChange}
                 view={lastView}
             />
-            <CalendarModal /> 
+            <AddNewFab />
+            <CalendarModal />
         </div>
     );
 };

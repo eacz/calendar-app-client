@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeModalAction } from '../../redux/actions/ui';
 import customStyles from '../../helpers/modalCustomStyles';
+import { addNewEvent } from '../../redux/actions/calendar';
 
 Modal.setAppElement('#root');
 
@@ -72,6 +73,14 @@ const CalendarModal = () => {
         }
         setIsTitleValid(true);
         closeModal();
+        dispatch(
+            addNewEvent({
+                ...formValues,
+                //temporal
+                id: new Date().getTime(),
+                user: { _id: 'dsadsf', name: 'Pepe' },
+            })
+        );
     };
 
     return (
