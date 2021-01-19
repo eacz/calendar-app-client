@@ -54,3 +54,13 @@ html, body {
     padding: 10px;
     width: 95%;
 }
+
+/*datepicker*/
+
+.react-datetime-picker input:focus {
+    outline: none;
+}
+
+.react-datetime-picker__wrapper {
+    border: none !important;
+}
