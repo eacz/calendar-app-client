@@ -8,6 +8,8 @@ import { messages } from '../../helpers/calendarConfig';
 import CalendarEvent from './CalendarEvent';
 import Navbar from '../ui/Navbar';
 import CalendarModal from './CalendarModal';
+import { useDispatch } from 'react-redux';
+import { openModalAction } from '../../redux/actions/ui';
 
 const localizer = momentLocalizer(moment);
 
@@ -24,6 +26,7 @@ const CalendarScreen = () => {
             style,
         };
     };
+    const dispatch = useDispatch()
 
     const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'month')
 
@@ -39,7 +42,7 @@ const CalendarScreen = () => {
     ];
 
     const onDoubleClick = (e) => {
-        console.log(e);
+        dispatch(openModalAction())
     };
 
     const onSelectEvent = (e) => {
