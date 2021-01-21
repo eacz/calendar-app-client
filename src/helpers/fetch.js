@@ -15,18 +15,25 @@ export const fetchWithoutToken = (endpoint, data, method = 'GET') => {
     }
 };
 
-export const fetchWithToken = (endpoint, data, method = 'GET', token) => {
+export const fetchWithToken = (endpoint, data, method = 'GET') => {
     const url = `${baseUrl}/${endpoint}`;
+    const token = localStorage.getItem('c-token') || '';
+    
     if (method === 'GET') {
-        return fetch(url);
+        return fetch(url, {
+            method,
+            headers: {
+                'x-auth-token': token,
+            },
+        });
     } else {
         return fetch(url, {
             method,
             headers: {
                 'Content-type': 'application/json',
+                'x-auth-token': token,
             },
             body: JSON.stringify(data),
-            'x-auth-token': token,
         });
     }
 };
