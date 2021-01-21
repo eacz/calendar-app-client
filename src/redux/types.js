@@ -9,6 +9,15 @@ const types = {
     calendarClearActiveEvent: '[calendar] clear active event',
     calendarUpdateEvent: '[calendar] update event',
     calendarDeleteEvent: '[calendar] delete event',
-}
 
-export default types
+    //auth
+    authChecking: '[auth] checking login state',
+    authCheckingFinish: '[auth] finish login state',
+    authStartLogin: '[auth] start login',
+    authLogin: '[auth] login',
+    authStartRegister: '[auth] start register',
+    authStartTokenRenew: '[auth] start token renew',
+    authLogout: '[auth] logout',
+};
+
+export default types;

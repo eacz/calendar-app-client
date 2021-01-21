@@ -1,0 +1,18 @@
+import types from "../types";
+
+const initialState = {
+    checking: true,
+    //uid: null,
+    //name: null
+};
+
+const authReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case types.authLogin:
+            return {...state, checking: false, ...action.payload}
+        default:
+            return state;
+    }
+};
+
+export default authReducer;
