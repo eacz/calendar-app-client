@@ -17,20 +17,18 @@ const calendarReducer = (state = initialState, action) => {
             console.log(action.payload);
             return {
                 ...state,
-                events: state.events.map((event) =>
-                    event.id === action.payload.id ? action.payload : event
-                ),
+                events: state.events.map((event) => (event.id === action.payload.id ? action.payload : event)),
             };
         case types.calendarDeleteEvent:
             return {
                 ...state,
-                events: state.events.filter(
-                    (event) => event.id !== state.activeEvent.id
-                ),
+                events: state.events.filter((event) => event.id !== state.activeEvent.id),
                 activeEvent: null,
             };
         case types.calendarEventsLoaded:
             return { ...state, events: [...action.payload] };
+        case types.calendarLogout:
+            return { ...initialState };
         default:
             return state;
     }

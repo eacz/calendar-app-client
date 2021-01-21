@@ -11,6 +11,7 @@ const types = {
     calendarClearActiveEvent: '[calendar] clear active event',
     calendarUpdateEvent: '[calendar] update event',
     calendarDeleteEvent: '[calendar] delete event',
+    calendarLogout: '[calendar] logout clear state',
 
     //auth
     authChecking: '[auth] checking login state',
