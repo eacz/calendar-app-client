@@ -14,6 +14,7 @@ const calendarReducer = (state = initialState, action) => {
         case types.calendarClearActiveEvent:
             return { ...state, activeEvent: null };
         case types.calendarUpdateEvent:
+            console.log(action.payload);
             return {
                 ...state,
                 events: state.events.map((event) =>

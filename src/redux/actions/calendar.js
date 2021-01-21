@@ -12,9 +12,6 @@ export const StartAddNewEvent = (event) => {
     return async (dispatch, getState) => {
         const { uid, name } = getState().auth;
         try {
-            //TODO: fix this on calendarScreen
-            event.dateStart = event.start;
-            event.dateEnd = event.end;
             const res = await fetchWithToken('events', event, 'POST');
             const body = await res.json();
             if (body.ok) {
@@ -32,6 +29,7 @@ export const StartAddNewEvent = (event) => {
         }
     };
 };
+
 const addNewEvent = (event) => ({
     type: types.calendarAddNewEvent,
     payload: event,
@@ -42,10 +40,21 @@ export const clearActiveEvent = () => ({
 });
 
 export const startUpdateEvent = (event) => {
-    return (dispatch ) => {
-        
-    }
-}
+    return async (dispatch) => {
+        try {
+            const res = await fetchWithToken(`events/${event.id}`, event, 'PUT');
+            const body = await res.json();
+            if (body.ok) {
+                dispatch(updateEvent(event));
+            } else {
+                Swal.fire('Error', body.msg, 'error')
+            }
+        } catch (error) {
+            console.log(error);
+            Swal.fire('Error', 'Something went wrong. Please try again', 'error');
+        }
+    };
+};
 
 const updateEvent = (event) => ({
     type: types.calendarUpdateEvent,
@@ -70,11 +79,7 @@ export const StartEventsLoading = () => {
             }
         } catch (error) {
             console.log(error);
-            Swal.fire(
-                'Error',
-                'Something Went wrong, please refresh the page',
-                'error'
-            );
+            Swal.fire('Error', 'Something Went wrong, please refresh the page', 'error');
         }
     };
 };
