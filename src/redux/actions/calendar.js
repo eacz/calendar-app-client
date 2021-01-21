@@ -1,3 +1,6 @@
+import Swal from 'sweetalert2';
+import { fetchWithToken } from '../../helpers/fetch';
+import refactorEventsDate from '../../helpers/refactorEventsDate';
 import types from '../types';
 
 export const setActiveEvent = (event) => ({
@@ -5,20 +8,78 @@ export const setActiveEvent = (event) => ({
     payload: event,
 });
 
-export const addNewEvent = (event) => ({
+export const StartAddNewEvent = (event) => {
+    return async (dispatch, getState) => {
+        const { uid, name } = getState().auth;
+        try {
+            //TODO: fix this on calendarScreen
+            event.dateStart = event.start;
+            event.dateEnd = event.end;
+            const res = await fetchWithToken('events', event, 'POST');
+            const body = await res.json();
+            if (body.ok) {
+                event.id = body.event.id;
+                event.user = {
+                    uid,
+                    name,
+                };
+                dispatch(addNewEvent(event));
+            } else {
+                Swal.fire('Error', body.msg, 'error');
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+};
+const addNewEvent = (event) => ({
     type: types.calendarAddNewEvent,
     payload: event,
 });
 
-export const clearActiveEvent = (event) => ({
+export const clearActiveEvent = () => ({
     type: types.calendarClearActiveEvent,
 });
 
-export const updateEvent = (event) => ({
+export const startUpdateEvent = (event) => {
+    return (dispatch ) => {
+        
+    }
+}
+
+const updateEvent = (event) => ({
     type: types.calendarUpdateEvent,
     payload: event,
 });
 
 export const eventDeleted = () => ({
     type: types.calendarDeleteEvent,
+});
+
+export const StartEventsLoading = () => {
+    return async (dispatch) => {
+        try {
+            const res = await fetchWithToken('events');
+            const body = await res.json();
+            const events = refactorEventsDate(body.events);
+
+            if (body.ok) {
+                dispatch(eventsLoaded(events));
+            } else {
+                Swal.fire('error', body.msg, 'error');
+            }
+        } catch (error) {
+            console.log(error);
+            Swal.fire(
+                'Error',
+                'Something Went wrong, please refresh the page',
+                'error'
+            );
+        }
+    };
+};
+
+const eventsLoaded = (events) => ({
+    type: types.calendarEventsLoaded,
+    payload: events,
 });

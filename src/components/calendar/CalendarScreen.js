@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
@@ -10,16 +10,22 @@ import Navbar from '../ui/Navbar';
 import CalendarModal from './CalendarModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { openModalAction } from '../../redux/actions/ui';
-import { clearActiveEvent, setActiveEvent } from '../../redux/actions/calendar';
+import {
+    clearActiveEvent,
+    setActiveEvent,
+    StartEventsLoading,
+} from '../../redux/actions/calendar';
 import AddNewFab from '../ui/AddNewFab';
 import DeleteEventFab from '../ui/DeleteEventFab';
 
 const localizer = momentLocalizer(moment);
 
 const CalendarScreen = () => {
+    const uid = useSelector(state => state.auth.uid)
     const eventStyleGetter = (event, start, end, isSelected) => {
+        
         const style = {
-            backgroundColor: '#367CF7',
+            backgroundColor: uid.toString() === event.user._id ? '#367CF7' : '#465660' ,
             borderRadius: '0px',
             opacity: 0.8,
             display: 'block',
@@ -54,6 +60,10 @@ const CalendarScreen = () => {
         dispatch(clearActiveEvent());
     };
 
+    useEffect(() => {
+        dispatch(StartEventsLoading());
+    }, [dispatch]);
+
     return (
         <div className="calendar-screen">
             <Navbar />
@@ -61,8 +71,8 @@ const CalendarScreen = () => {
             <Calendar
                 localizer={localizer}
                 events={events}
-                startAccessor="start"
-                endAccessor="end"
+                startAccessor="dateStart"
+                endAccessor="dateEnd"
                 messages={messages}
                 eventPropGetter={eventStyleGetter}
                 components={{ event: CalendarEvent }}

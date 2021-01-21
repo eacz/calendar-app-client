@@ -8,9 +8,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { closeModalAction } from '../../redux/actions/ui';
 import customStyles from '../../helpers/modalCustomStyles';
 import {
-    addNewEvent,
     clearActiveEvent,
-    updateEvent,
+    StartAddNewEvent,
+    startUpdateEvent,
 } from '../../redux/actions/calendar';
 
 Modal.setAppElement('#root');
@@ -82,14 +82,11 @@ const CalendarModal = () => {
         setIsTitleValid(true);
         closeModal();
         if (activeEvent) {
-            dispatch(updateEvent(formValues));
+            dispatch(startUpdateEvent(formValues));
         } else {
             dispatch(
-                addNewEvent({
+                StartAddNewEvent({
                     ...formValues,
-                    //temporal
-                    id: new Date().getTime(),
-                    user: { _id: 'dsadsf', name: 'Pepe' },
                 })
             );
         }
