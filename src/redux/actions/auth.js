@@ -50,16 +50,26 @@ export const startChecking = () => {
             localStorage.setItem('c-token-init-date', new Date().getTime());
             dispatch(login({ uid, name }));
         } else {
-            dispatch(checkingFinish())
+            dispatch(checkingFinish());
         }
     };
 };
 
 const checkingFinish = () => ({
-    type: types.authCheckingFinish
-})
+    type: types.authCheckingFinish,
+});
 
 const login = (user) => ({
     type: types.authLogin,
     payload: user,
 });
+
+export const startLogout = () => {
+    return (dispatch) => {
+        localStorage.removeItem('c-token');
+        localStorage.removeItem('c-token-init-date');
+        dispatch(logout());
+    };
+};
+
+export const logout = () => ({ type: types.authLogout });
